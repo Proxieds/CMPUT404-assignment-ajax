@@ -49,6 +49,7 @@ class World:
         self.space = dict()
 
     def get(self, entity):
+        print(self.space.get(entity,dict()))
         return self.space.get(entity,dict())
     
     def world(self):
@@ -84,7 +85,7 @@ def update(entity):
     for key, value in parsed_data.items():
         myWorld.update(parsed_entity, key, value)
     # Returns the entity after performing the update
-    return myWorld.get(entity)
+    return myWorld.get(parsed_entity)
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
@@ -94,7 +95,8 @@ def world():
 @app.route("/entity/<entity>")    
 def get_entity(entity):
     '''This is the GET version of the entity interface, return a representation of the entity'''
-    return myWorld.get(entity)
+    parsed_entity = entity.strip()
+    return myWorld.get(parsed_entity)
 
 @app.route("/clear", methods=['POST','GET'])
 def clear():

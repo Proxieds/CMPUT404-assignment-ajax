@@ -34,12 +34,15 @@ var H = canvas.height = window.innerHeight-50;
 
 function sendJSONXMLHTTPRequest(url, objects, callback) {
     var xhr = new XMLHttpRequest();
+
     xhr.onreadystatechange = function () {
         if (xhr.readyState==4) {
             try {
                 if (xhr.status==200) {
                     //XXX: parse some JSON from the request!
                     //XXX: Pass the data to the callback!
+                    // console.log();
+                    callback(JSON.parse(xhr.response));
                 }
             } 
             catch(e) {
@@ -47,13 +50,47 @@ function sendJSONXMLHTTPRequest(url, objects, callback) {
             }
         }
     };
-    //XXX: POST to a URL
-    //XXX: set the mimetype and the accept headers!
-    // Remember to use application/json !
+
+
+    // Sends a POST request when object was provided, otherwise send a GET request during update.
+    objects ? xhr.open("POST", url) : xhr.open("GET", url);
+    // Set Accept headers and content
+    xhr.setRequestHeader("Accept", "application/json");
+    xhr.setRequestHeader("Content-Type", "application/json");
+    // If an entity was provided, send it in the POST request, else send nothing.
+    objects ? xhr.send(objects) : xhr.send();
+
+}
+
+function handleResponse(response) {
+//    world = response;
+    // world.push({key: "x", value: "y"});
+    // console.log(world);
+    // response.forEach(key => console.log(key));
+    console.log(response);
+    // console.log(response.key);
+    // for (var key in response) {
+    //    console.log(response[key]);
+    // }
+    response_ids = Object.keys(response);
+    // response_keys.forEach((key) => console.log(item));
+    response_ids.forEach((id) => {
+        // key.forEach(({ key, val }) => key in dict ? dict[key].push(val) : dict[key] = [val] )
+        // console.log(response[id]);
+        world[id] = response[id];
+        // console.log(response[key])
+    })
+    drawNext = true;
 }
 
 
 world = {};
+
+// document.addEventListener("DOMContentLoaded", function () {
+//     console.log(world);
+
+//     alert('hi');
+// });
 
 //XXX: TODO Make this prettier!
 function drawCircle(context,entity) {
@@ -262,12 +299,17 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 
 function update() {
     //XXX: TODO Get the world from the webservice using a XMLHTTPRequest
+    var url = `http://${host}/world`
+    sendJSONXMLHTTPRequest(url, null, handleResponse);
+    console.log(world);
+    console.log("DONE");
+
     drawFrame();
 }
 
 // 30 frames per second
-setInterval( update, 1000/30.0);
-
+// update();
+interval = setInterval( update, 1000/30.0);
 
 
     </script>
