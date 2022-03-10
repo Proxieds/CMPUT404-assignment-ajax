@@ -71,6 +71,7 @@ function handleResponse(response) {
 world = {};
 
 //XXX: TODO Make this prettier!
+// Filling the circles with colour instead of stroke
 function drawCircle(context,entity) {
     with(context) {
         beginPath();              
@@ -148,10 +149,10 @@ function getPosition(e) {
 	}
 }
 
-function getRandomColor() {
-    // Returns a random color index within the list of colors to draw circles with
-    var colors = ['#18DCFF', '#FF7AB0', '#75C069', '#FFB984', '#40F3D0', '#F9F871', '#5E9FF4', '#FF80AF', '#73C068', '#FB9038'];
-    return colors[Math.floor(Math.random() * colors.length)];
+function getRandomColour() {
+    // Returns a random colour index within the list of colours to draw circles with
+    var colours = ['#18DCFF', '#FF7AB0', '#75C069', '#FFB984', '#40F3D0', '#F9F871', '#5E9FF4', '#FF80AF', '#73C068', '#FB9038'];
+    return colours[Math.floor(Math.random() * colours.length)];
 }
 
 
@@ -269,17 +270,17 @@ mouse = (function() {
 
 // Add the application specific mouse listeners!
 //XXX: TODO Make these prettier!
-// Filling the circles and using random colors
+// Filling the circles and using random colours
 mouse.mousedowners.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour': getRandomColor()});
+    addEntityWithoutName({'x':x,'y':y,'colour': getRandomColour()});
 });
 
 mouse.mouseuppers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour': getRandomColor()});
+    addEntityWithoutName({'x':x,'y':y,'colour': getRandomColour()});
 });
 
 mouse.mousedraggers.push(function(x,y,clicked,e) {
-    addEntityWithoutName({'x':x,'y':y,'colour': getRandomColor(),'radius':10});
+    addEntityWithoutName({'x':x,'y':y,'colour': getRandomColour(),'radius':10});
 });
 
 
